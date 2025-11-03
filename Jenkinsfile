@@ -4,24 +4,30 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo '🔧 Building the inventory-api app...'
-                sh 'echo "Building application..."'
+                echo "🔧 Building app for branch: ${env.BRANCH_NAME}"
+                sh 'echo Building...'
                 sh 'sleep 2'
             }
         }
 
         stage('Test') {
+            when {
+                branch 'dev'
+            }
             steps {
-                echo '🧪 Running tests...'
-                sh 'echo "Running basic tests..."'
+                echo "🧪 Running tests for branch: ${env.BRANCH_NAME}"
+                sh 'echo Testing...'
                 sh 'sleep 2'
             }
         }
 
         stage('Deploy') {
+            when {
+                branch 'main'
+            }
             steps {
-                echo '🚀 Deploying application...'
-                sh 'echo "Deploying to environment..."'
+                echo "🚀 Deploying for branch: ${env.BRANCH_NAME}"
+                sh 'echo Deploying...'
                 sh 'sleep 2'
             }
         }
@@ -29,10 +35,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline completed successfully!'
-        }
-        failure {
-            echo '❌ Pipeline failed!'
+            echo "✅ Pipeline completed for branch: ${env.BRANCH_NAME}"
         }
     }
 }
